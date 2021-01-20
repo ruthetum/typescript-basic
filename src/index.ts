@@ -27,6 +27,13 @@ class Block {
         data: string,
         timestamp: number
     ): string => CrpytoJS.SHA256(index + previousHash + timestamp + data).toString();
+
+    static validateStructure = (aBlock: Block): boolean =>
+        typeof aBlock.index === "number" &&
+        typeof aBlock.hash === "string" &&
+        typeof aBlock.previousHash === "string" &&
+        typeof aBlock.data === "string" &&
+        typeof aBlock.timestamp === "number";
 }
 
 const genesisBlock: Block = new Block(0, "123456789", "", "Hello", 123456);
@@ -45,9 +52,42 @@ const createNewBlock = (data: string): Block => {
     const newTimestamp: number = getNewTimestamp();
     const newHash: string = Block.calculateHash(newIndex, previousBlock.hash, data, newTimestamp);
     const newBlock: Block = new Block(newIndex, newHash, previousBlock.hash, data, newTimestamp);
+    addBlock(newBlock);
     return newBlock;
-} ;
+};
 
-console.log(createNewBlock("hello"));
+const getHashForBlock = (aBlock: Block): string =>
+    Block.calculateHash(
+        aBlock.index,
+        aBlock.previousHash,
+        aBlock.data,
+        aBlock.timestamp
+    );
+
+const isBlockValid = (candidateBlock: Block, previousBlock: Block): boolean => {
+    if (!Block.validateStructure(candidateBlock)) {
+        return false;
+    } else if (previousBlock.index + 1 !== candidateBlock.index) {
+        return false;
+    } else if (previousBlock.hash !== candidateBlock.previousHash) {
+        return false;
+    } else if (getHashForBlock(candidateBlock) !== candidateBlock.hash) {
+        return false;
+    } else {
+        return true;
+    }
+};
+
+const addBlock = (newBlock: Block): void => {
+    if (isBlockValid(newBlock, getLatestBlock())) {
+        blockchain.push(newBlock);
+    }
+};
+
+createNewBlock("second block");
+createNewBlock("third block");
+createNewBlock("fourth block");
+
+console.log(blockchain);
 
 export {}
