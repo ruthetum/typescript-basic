@@ -1,0 +1,21 @@
+{
+  "name": "typescript-basic",
+  "version": "1.0.0",
+  "description": "노마드코더 [Typescript로 블록체인 만들기](https://nomadcoders.co/typescript-for-beginners) (TypeScript for beginners)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "prestart": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruthetum/typescript-basic.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ruthetum/typescript-basic/issues"
+  },
+  "homepage": "https://github.com/ruthetum/typescript-basic#readme"
+}
